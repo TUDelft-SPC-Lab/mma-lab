@@ -26,4 +26,7 @@ Type this in everytime before you start working on the labs otherwise the enviro
 This can be done by choosing the Conda environment as your project interpreter in an IDE such as Intellij IDEA. Follow the tutorial how to configure this Conda environment in an IDE here: https://www.jetbrains.com/help/idea/configuring-python-sdk.html
 
 ## Troubleshooting
+
+If you encounter any packages missing make use of the "conda install ..." command to install these.
+
 If following this installation guide didn't work for you please consider following the VM installation guide since using the VM will prove less troublesome.
