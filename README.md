@@ -4,7 +4,7 @@ Firstly, above doing a local install we recommend you to make use of the VM. Wit
 
 1. Firstly download the Anaconda Python 3.7 version for your operating system from: https://www.anaconda.com/distribution/
 2. Install Anaconda from the installer
-3. Download the Conda environment file (.yml) from: https://drive.google.com/uc?export=download&id=1vsKuxxg_B7X-bIb9_XtkY0sBllgkjpst
+3. Download the Conda environment file (MMA2020.yml) from this Github repository.
 4. Open the Anaconda-Navigator
 5. Go to the environment tab and click on import
 6. As a name fill in "MMA2020" and choose the Conda environment file under "Specification file"
