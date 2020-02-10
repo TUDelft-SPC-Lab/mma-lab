@@ -1,6 +1,8 @@
 # Local installation guide
 ## Anaconda environment installation
-Firstly, above doing a local install we recommend you to make use of the VM. With the VM environment you are far less likely to encounter trouble with the code from the labs. Nevertheless, if you have more experience with such troubleshooting and have worked with Python before, you could also consider doing a local install. We will be making use of Anaconda, and a .yml specifying a set of different packages that are used by Python in the labs. In Anaconda you can create such a Python environment by importing this .yml file. This is done as follows:
+Firstly, above doing a local install we recommend you to make use of the VM. With the VM environment you are far less likely to encounter trouble with the code from the labs. Nevertheless, if you have more experience with such troubleshooting and have worked with Python before, you could also consider doing a local install.
+
+This procedure only work for Linux and OSX installs. We will be making use of Anaconda, and a .yml specifying a set of different packages that are used by Python in the labs. In Anaconda you can create such a Python environment by importing this .yml file. This is done as follows:
 
 1. Firstly download the Anaconda Python 3.7 version for your operating system from: https://www.anaconda.com/distribution/
 2. Install Anaconda from the installer
@@ -28,5 +30,7 @@ This can be done by choosing the Conda environment as your project interpreter i
 ## Troubleshooting
 
 If you encounter any packages missing make use of the "conda install ..." command to install these.
+
+On Linux the OpenCV package might not be installed well directly. This can be resolved by activating the mma2020 environment, and then running the command "conda install -c conda-forge opencv=3.4.2"
 
 If following this installation guide didn't work for you please consider following the VM installation guide since using the VM will prove less troublesome.
