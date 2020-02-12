@@ -6,19 +6,18 @@ This procedure only work for Linux and OSX installs. We will be making use of An
 
 1. Firstly download the Anaconda Python 3.7 version for your operating system from: https://www.anaconda.com/distribution/
 2. Install Anaconda from the installer
-3. Download the Conda environment file (MMA2020.yml) from this Github repository.
+3. Download the Conda environment file (MMA2020.yml) from this Github repository (or clone the repository).
 4. Open the Anaconda-Navigator
 5. Go to the environment tab and click on import
-6. As a name fill in "MMA2020" and choose the Conda environment file under "Specification file"
+6. As a name fill in "mma2020" and choose the Conda environment file under "Specification file"
 
-
-Congratulations! You have installed an Anaconda environment with the packages we will be using for the labs.
+Congratulations! You have installed an Anaconda environment with the packages we will be using for the labs. You can find the code in this repository.
 
 ## Using the environment in the shell
 Now whenever you are going to work on the labs you will have to activate this particular environment. Most of the labs can be done by running .py scripts from a shell window.
 
 1. Open Terminal/Powershell or your preferred shell of choice.
-2. Type in: "conda activate MMA2020"
+2. Type in: "conda activate mma2020"
 3. Now you will be making use the environment with the correct Python version and packages we will be using for the labs!
 
 Type this in everytime before you start working on the labs otherwise the environment won't be activated within the terminal!
