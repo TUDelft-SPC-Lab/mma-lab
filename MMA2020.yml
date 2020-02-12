@@ -154,5 +154,4 @@ dependencies:
   - pip:
     - numpy==1.16.6
     - scikits-talkbox==0.2.5
-prefix: /home/mma/anaconda3/envs/mma2020
 
