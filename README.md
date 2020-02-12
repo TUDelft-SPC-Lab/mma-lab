@@ -11,16 +11,13 @@ This procedure only work for Linux and OSX installs. We will be making use of An
 5. Go to the environment tab and click on import
 6. As a name fill in "mma2020" and choose the Conda environment file under "Specification file"
 
-Congratulations! You have installed an Anaconda environment with the packages we will be using for the labs. You can find the code in this repository.
-
-## Using the environment in the shell
+## Using the environment
 Now whenever you are going to work on the labs you will have to activate this particular environment. Most of the labs can be done by running .py scripts from a shell window.
 
 1. Open Terminal/Powershell or your preferred shell of choice.
-2. Type in: "conda activate mma2020"
-3. Now you will be making use the environment with the correct Python version and packages we will be using for the labs!
-
-Type this in everytime before you start working on the labs otherwise the environment won't be activated within the terminal!
+2. Type in: "conda activate mma2020". Type this in everytime before you start working on the labs otherwise the environment won't be activated within the terminal!
+3. Now you are making use the environment with the correct Python version and packages. Make sure to use the command "python" and not "python3" or other variante when running your programs.
+4. Check that everything is correctly installed by running the executable scripts in the "Code" folder of this repository, for example `python Code/video_query.py --help`. If you get an error and do not see the "help" of the program, notify the teaching team. These are the programs you will be running during the course, so if there are issues with them, they must be fixed.
 
 ## Using the environment in an IDE
 
