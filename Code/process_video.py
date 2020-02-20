@@ -66,7 +66,7 @@ def process_videos(video_list, indx):
         frame_rate = get_frame_rate(video) 
         total_frames = get_frame_count(video)
         total_audio_frames = get_frame_count_audio(video)
-
+        
         # get corresponding audio file
         filename, fileExtension = os.path.splitext(video)
         audio = filename + '.wav'
@@ -83,7 +83,7 @@ def process_videos(video_list, indx):
         frame_nbr = 0
         while(cap.isOpened()):
             ret, frame = cap.read()
-            if frame == None:
+            if not ret:
                 break
             audio_frame = frame_to_audio(frame_nbr, frame_rate, fs, wav_data)
 
@@ -95,14 +95,14 @@ def process_videos(video_list, indx):
                 mfccs.append(ceps)
                 
             # calculate sum of differences
-            if not prev_frame == None:
+            if not prev_frame is None:
                 tdiv = temporal_diff(prev_frame, frame, 10)
                 #diff = np.absolute(prev_frame - frame)
                 #sum = np.sum(diff.flatten()) / (diff.shape[0]*diff.shape[1]*diff.shape[2])
                 sum_of_differences.append(tdiv)
             colorhist = ft.colorhist(frame)
             colorhists.append(colorhist)
-            if not prev_colorhist == None:
+            if not prev_colorhist is None:
                 ch_diff = colorhist_diff(prev_colorhist, colorhist)
                 colorhist_diffs.append(ch_diff)
             prev_colorhist = colorhist
@@ -145,6 +145,5 @@ for type_ in video_types:
 # create database
 indx = create_database()
 process_videos(video_list,indx)
-
 
 
