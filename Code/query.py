@@ -22,10 +22,12 @@ geo_candidates = None
 
 features = ['sift', 'colorhist', 'harris', 'geo', 'all']
 
-parser = argparse.ArgumentParser(description="Query tool to query the database created by the database tool (dbt.py). Retrieve images based on image content and metadata.")
+parser = argparse.ArgumentParser(description="Query tool to query the database created by the database tool (dbt.py). Retrieve images based on image content and metadata.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument("database", help="Path to the database to execute the query on.")
 parser.add_argument("query", help="Query image")
 parser.add_argument("feature", help="The type of feature to get results on. Chose from "+str(features))
+default_images_folder = os.path.realpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../Images/joint'))
+parser.add_argument("--images", help="The folder used to create the database images. Used for displaying results.", default=default_images_folder)
 
 args = parser.parse_args()
 
@@ -127,10 +129,12 @@ if __name__ == '__main__':
         fig = plt.figure()
         i = 1
         for im_name in im_list:
+            im_folder = args.images
+            im_path = os.path.join(im_folder, os.path.basename(im_name))
             print(im_name)            
-            geotag = ft.extract_exif(im_name)
+            geotag = ft.extract_exif(im_path)
             print i, im_name, '\t\tgeotag:', geotag, '\tdist: ', distance[i-1]
-            im = cv2.imread(im_name, cv2.IMREAD_COLOR)
+            im = cv2.imread(im_path, cv2.IMREAD_COLOR)
             im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
             plt.subplot(2,5,i)
             plt.imshow(im)
