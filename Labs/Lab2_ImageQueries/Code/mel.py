@@ -1,9 +1,11 @@
-#Mel scale definition for MFCC extraction as taken from talkbox scikit found at https://github.com/cournape/talkbox
+# Mel scale definition for MFCC extraction as taken from talkbox scikit found at https://github.com/cournape/talkbox
 import numpy as np
+
 
 def hz2mel(f):
     """Convert an array of frequency in Hz into mel."""
-    return 1127.01048 * np.log(f/700 +1)
+    return 1127.01048 * np.log(f / 700 + 1)
+
 
 def mel2hz(m):
     """Convert an array of frequency in Hz into mel."""

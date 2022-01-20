@@ -1,7 +1,6 @@
 import pickle
-import numpy as np
 import sqlite3 as sqlite
-from os.path import basename
+
 
 class Indexer(object):
 
@@ -10,31 +9,30 @@ class Indexer(object):
 
     def __del__(self):
         self.con.close()
-    
+
     def db_commit(self):
         self.con.commit()
-    
+
     def create_tables(self):
-        self.con.execute('create table imlist(filename)') 
-        self.con.execute('create index im_idx on imlist(filename)') 
+        self.con.execute('create table imlist(filename)')
+        self.con.execute('create index im_idx on imlist(filename)')
 
-        self.con.execute('create table sift_imwords(imid,wordid,vocname)') 
-        self.con.execute('create index sift_imid_idx on sift_imwords(imid)') 
-        self.con.execute('create index sift_wordid_idx on sift_imwords(wordid)') 
+        self.con.execute('create table sift_imwords(imid,wordid,vocname)')
+        self.con.execute('create index sift_imid_idx on sift_imwords(imid)')
+        self.con.execute('create index sift_wordid_idx on sift_imwords(wordid)')
 
-        self.con.execute('create table sift_imhistograms(imid,histogram,vocname)') 
-        self.con.execute('create index sift_imidhist_idx on sift_imhistograms(imid)') 
+        self.con.execute('create table sift_imhistograms(imid,histogram,vocname)')
+        self.con.execute('create index sift_imidhist_idx on sift_imhistograms(imid)')
 
         self.con.execute('create table colorhists(imid, hist)')
-        self.con.execute('create index colorhist_idx on colorhists(imid)') 
+        self.con.execute('create index colorhist_idx on colorhists(imid)')
 
-        self.con.execute('create table harris_imwords(imid,wordid,vocname)') 
-        self.con.execute('create index harris_imid_idx on harris_imwords(imid)') 
-        self.con.execute('create index harris_wordid_idx on harris_imwords(wordid)') 
+        self.con.execute('create table harris_imwords(imid,wordid,vocname)')
+        self.con.execute('create index harris_imid_idx on harris_imwords(imid)')
+        self.con.execute('create index harris_wordid_idx on harris_imwords(wordid)')
 
-        self.con.execute('create table harris_imhistograms(imid,histogram,vocname)') 
-        self.con.execute('create index harris_imidhist_idx on harris_imhistograms(imid)') 
-
+        self.con.execute('create table harris_imhistograms(imid,histogram,vocname)')
+        self.con.execute('create index harris_imidhist_idx on harris_imhistograms(imid)')
 
         self.db_commit()
 
@@ -42,12 +40,12 @@ class Indexer(object):
         """ Take an image with feature descriptors, 
             project on vocabulary and add to database. """
 
-        print ('indexing', imname)
+        print('indexing', imname)
 
         # get the imid
         imid = self.get_id(imname)
 
-        #get the words
+        # get the words
         imwords = voc.project(descr)
         nbr_words = imwords.shape[0]
 
@@ -55,20 +53,24 @@ class Indexer(object):
         for i in range(nbr_words):
             word = imwords[i]
             # wordid is the word number itself
-            self.con.execute("insert into "+type+"_imwords(imid,wordid,vocname) values (?,?,?)", (imid,word,voc.name))
+            self.con.execute("insert into " + type + "_imwords(imid,wordid,vocname) values (?,?,?)",
+                             (imid, word, voc.name))
 
         # store word histogram for image
         # use pickle to encode NumPy arrays as strings
-        self.con.execute("insert into "+type+"_imhistograms(imid,histogram,vocname) values (?,?,?)", (imid,pickle.dumps(imwords), voc.name))
+        self.con.execute(
+            "insert into " + type + "_imhistograms(imid,histogram,vocname) values (?,?,?)",
+            (imid, pickle.dumps(imwords), voc.name))
 
     def add_to_colorhist_index(self, imname, hist):
 
-        print ('indexing', imname)
+        print('indexing', imname)
 
         # get the imid
         imid = self.get_id(imname)
 
-        self.con.execute("insert into colorhists(imid, hist) values (?,?)", (imid, pickle.dumps(hist)))
+        self.con.execute("insert into colorhists(imid, hist) values (?,?)",
+                         (imid, pickle.dumps(hist)))
 
     def is_indexed(self, imname):
         """ Returns True is imname has been indexed. """
@@ -86,5 +88,3 @@ class Indexer(object):
             return cur.lastrowid
         else:
             return res[0]
-
-

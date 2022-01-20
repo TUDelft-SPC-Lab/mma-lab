@@ -1,29 +1,26 @@
-#MFCC extraction code as taken from talkbox scikit found at https://github.com/cournape/talkbox. Minor changes to MFCC extraction process related to handling variable sample rates
+# MFCC extraction code as taken from talkbox scikit found at https://github.com/cournape/talkbox. Minor changes to MFCC extraction process related to handling variable sample rates
 import numpy as np
-
-from scipy.io import loadmat
-from scipy.signal import lfilter, hamming
+from scikits.talkbox import segment_axis
 from scipy.fftpack import fft
 from scipy.fftpack.realtransforms import dct
+from scipy.io import loadmat
+from scipy.signal import lfilter, hamming
 
-from scikits.talkbox import segment_axis
-
-from mel import hz2mel
 
 def trfbank(fs, nfft, lowfreq, linsc, logsc, nlinfilt, nlogfilt):
     """Compute triangular filterbank for MFCC computation."""
     # Total number of filters
     nfilt = nlinfilt + nlogfilt
 
-    #------------------------
+    # ------------------------
     # Compute the filter bank
-    #------------------------
+    # ------------------------
     # Compute start/middle/end points of the triangular filters in spectral
     # domain
-    freqs = np.zeros(nfilt+2)
+    freqs = np.zeros(nfilt + 2)
     freqs[:nlinfilt] = lowfreq + np.arange(nlinfilt) * linsc
-    freqs[nlinfilt:] = freqs[nlinfilt-1] * logsc ** np.arange(1, nlogfilt + 3)
-    heights = 2./(freqs[2:] - freqs[0:-2])
+    freqs[nlinfilt:] = freqs[nlinfilt - 1] * logsc ** np.arange(1, nlogfilt + 3)
+    heights = 2. / (freqs[2:] - freqs[0:-2])
 
     # Compute filterbank coeff (in fft domain, in bins)
     fbank = np.zeros((nfilt, nfft))
@@ -31,8 +28,8 @@ def trfbank(fs, nfft, lowfreq, linsc, logsc, nlinfilt, nlogfilt):
     nfreqs = np.arange(nfft) / (1. * nfft) * fs
     for i in range(nfilt):
         low = freqs[i]
-        cen = freqs[i+1]
-        hi = freqs[i+2]
+        cen = freqs[i + 1]
+        hi = freqs[i + 2]
 
         lid = np.arange(np.floor(low * nfft / fs) + 1,
                         np.floor(cen * nfft / fs) + 1, dtype=np.int)
@@ -44,6 +41,7 @@ def trfbank(fs, nfft, lowfreq, linsc, logsc, nlinfilt, nlogfilt):
         fbank[i][rid] = rslope * (hi - nfreqs[rid])
 
     return fbank, freqs
+
 
 def mfcc(input, nwin=256, nfft=512, fs=16000, nceps=13):
     """Compute Mel Frequency Cepstral Coefficients.
@@ -74,19 +72,19 @@ def mfcc(input, nwin=256, nfft=512, fs=16000, nceps=13):
            ASSP-28 (4): 357-366, August 1980."""
 
     # MFCC parameters: taken from auditory toolbox. Changed from talkbox version to allow variable sample rates
-    over = nwin/2
+    over = nwin / 2
     # Pre-emphasis factor (to take into account the -6dB/octave rolloff of the
     # radiation at the lips level)
     prefac = 0.97
 
-    #lowfreq = 400 / 3.
+    # lowfreq = 400 / 3.
     lowfreq = 133.33
-    #highfreq = 6855.4976
-    linsc = 200/3.
+    # highfreq = 6855.4976
+    linsc = 200 / 3.
     logsc = 1.0711703
-    
-    fsMax=8000
-    fsMaxSample=int(nfft*(fsMax/(fs*1.0)))
+
+    fsMax = 8000
+    fsMaxSample = int(nfft * (fsMax / (fs * 1.0)))
 
     nlinfil = 13
     nlogfil = 27
@@ -96,14 +94,14 @@ def mfcc(input, nwin=256, nfft=512, fs=16000, nceps=13):
 
     fbank = trfbank(fsMax, fsMaxSample, lowfreq, linsc, logsc, nlinfil, nlogfil)[0]
 
-    #------------------
+    # ------------------
     # Compute the MFCC
-    #------------------
+    # ------------------
     extract = preemp(input, prefac)
     framed = segment_axis(extract, nwin, over) * w
 
     # Compute the spectrum magnitude
-    spec = np.abs(fft(framed, nfft, axis=-1))[:,:fsMaxSample]
+    spec = np.abs(fft(framed, nfft, axis=-1))[:, :fsMaxSample]
     # Filter the spectrum through the triangle filterbank
     mspec = np.log10(np.dot(spec, fbank.T))
     # Use the DCT to 'compress' the coefficients (spectrum -> cepstrum domain)
@@ -111,9 +109,11 @@ def mfcc(input, nwin=256, nfft=512, fs=16000, nceps=13):
 
     return ceps, mspec, spec
 
+
 def preemp(input, p):
     """Pre-emphasis filter."""
     return lfilter([1., -p], 1, input)
+
 
 if __name__ == '__main__':
     extract = loadmat('extract.mat')['extract']

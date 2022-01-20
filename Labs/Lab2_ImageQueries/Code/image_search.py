@@ -1,8 +1,9 @@
 import pickle
-import numpy as np
 import sqlite3 as sqlite
-from scipy.spatial.distance import cosine
 from os.path import basename
+
+import numpy as np
+from scipy.spatial.distance import cosine
 
 
 class Searcher:
