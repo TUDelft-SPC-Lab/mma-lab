@@ -16,9 +16,8 @@ class Searcher:
 
     def candidates_from_word(self, type, imword):
         """ Get list of images containing imword/ """
-
         im_ids = self.con.execute(
-            "select distinct imid from " + type + "_imwords where wordid=%d" % imword).fetchall()
+            "select distinct imid from sift_imwords where wordid=%d" % imword).fetchall()
         return [i[0] for i in im_ids]
 
     def color_hist_distance(hist1, hist2):

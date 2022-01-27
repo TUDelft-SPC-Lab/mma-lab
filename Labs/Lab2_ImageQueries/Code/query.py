@@ -63,7 +63,7 @@ if __name__ == '__main__':
         fname = base + '_sift_vocabulary.pkl'
         # Load the vocabulary to project the features of our query image on
         with open(fname, 'rb') as f:
-            sift_vocabulary = pickle.load(f)
+            sift_vocabulary = pickle.load(f, encoding='latin1')
 
         sift_query = ft.get_sift_features([args.query])[args.query]
         # Get a histogram of visual words for the query image
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         print('Loading Harris vocabulary ...')
         fname = base + '_harris_vocabulary.pkl'
         with open(fname, 'rb') as f:
-            harris_vocabulary = pickle.load(f)
+            harris_vocabulary = pickle.load(f, encoding='latin1')
 
         harris_query = ft.get_harris_features([args.query])[args.query]
         image_words = harris_vocabulary.project(harris_query)
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         fname = base + '_colorhist.pkl'
         # Load all colorhistogram features of our training data
         with open(fname, 'rb') as f:
-            colorhist_features = pickle.load(f)
+            colorhist_features = pickle.load(f, encoding='latin1')
 
         # Get colorhistogram for the query image
         colorhist_query = ft.get_colorhist([args.query])[args.query]
@@ -100,7 +100,7 @@ if __name__ == '__main__':
         print('Load geo data ..')
         fname = base + '_meta.pkl'
         with open(fname, 'rb') as f:
-            geo_features = pickle.load(f)
+            geo_features = pickle.load(f, encoding='latin1')
 
         metadata = ft.extract_metadata([args.query])[args.query]
         if metadata_distance.has_geotag(metadata):
